@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Usage: claude-tmux-notify set|clear
+[ -z "$TMUX" ] && exit 0
+session=$(tmux display-message -p '#{session_name}')
+case "$1" in
+  set)   tmux set -t "$session" @claude_waiting 1 ;;
+  clear) tmux set -ut "$session" @claude_waiting ;;
+esac

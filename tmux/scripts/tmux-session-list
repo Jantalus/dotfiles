@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Outputs: session_name\tdisplay_label (with ⏳ if claude is waiting)
+tmux ls -F '#{session_name}\t#{@claude_waiting}' 2>/dev/null \
+  | awk -F'\t' '{print $1 "\t" $1 ($2=="1" ? " ⏳" : "")}'
