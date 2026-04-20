@@ -1,0 +1,19 @@
+# Whitelist approach — ignore everything, opt in explicitly
+*
+.*
+
+# Root files
+!.gitignore
+!install.sh
+
+# tmux
+!tmux/
+!tmux/**
+
+# nvim
+!nvim/
+!nvim/**
+
+# ghostty
+!ghostty/
+!ghostty/**

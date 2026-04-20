@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# px — tmux session manager
+#
+# Usage:
+#   px             interactive fzf picker (creates or switches)
+#   px <path>      create or switch to session for that path
+#   px --all       create sessions for all entries (no attach)
+#   px --list      list current sessions
+#   px --kill      kill a session (fzf picker)
+
+# Scanned: each fury_* subdir becomes a session
+SCAN_DIR="$HOME/Desktop/Pricing"
+
+# Direct: each path becomes its own session
+DIRECT_DIRS=(
+  "$HOME/.config/nvim"
+  "$HOME/Desktop/Pricing/Scripts"
+  "$HOME/Desktop/Pricing/bigquery"
+  "$HOME/Desktop/Pricing/jira"
+)
+
+session_name_for() {
+  local base
+  base=$(basename "$1")
+  echo "${base#fury_}"
+}
+
+create_or_switch() {
+  local dir="$1"
+  local session
+  session=$(session_name_for "$dir")
+
+  if [ ! -d "$dir" ]; then
+    echo "Not a directory: $dir" >&2
+    return 1
+  fi
+
+  if tmux has-session -t "$session" 2>/dev/null; then
+    if [ -n "$TMUX" ]; then
+      tmux switch-client -t "$session"
+    else
+      tmux attach-session -t "$session"
+    fi
+    return
+  fi
+
+  tmux new-session -d -s "$session" -c "$dir" -n "work"
+  tmux send-keys -t "${session}:work" "nvim ." Enter
+
+  tmux split-window -t "${session}:work" -h -c "$dir"
+  tmux send-keys -t "${session}:work" "claude" Enter
+
+  tmux resize-pane -t "${session}:work.left" -x "65%"
+  tmux select-pane -t "${session}:work.left"
+
+  echo "Created session: $session"
+
+  if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$session"
+  else
+    tmux attach-session -t "$session"
+  fi
+}
+
+all_dirs() {
+  for d in "$SCAN_DIR"/fury_*/; do
+    [ -d "$d" ] && printf '%s\n' "${d%/}"
+  done
+  for d in "${DIRECT_DIRS[@]}"; do
+    [ -d "$d" ] && printf '%s\n' "$d"
+  done
+}
+
+pick_dir() {
+  local choice
+  choice=$(
+    { printf '[custom path]\t__custom__\n'; all_dirs | awk -F'/' '{print $NF "\t" $0}'; } \
+      | fzf --prompt="repo > " --height=40% --border \
+            --delimiter=$'\t' --with-nth=1 \
+      | cut -f2
+  )
+
+  if [ "$choice" = "__custom__" ]; then
+    choice=$(fzf --prompt="path > " --border --height=40% \
+                 --walker=dir,follow --walker-root="$HOME" </dev/tty)
+  fi
+
+  echo "$choice"
+}
+
+pick_session() {
+  tmux list-sessions -F '#{session_name}' 2>/dev/null \
+    | fzf --prompt="session > " --height=40% --border
+}
+
+case "${1:-}" in
+  --all)
+    while IFS= read -r dir; do
+      create_or_switch "$dir" &
+    done < <(all_dirs)
+    wait
+    ;;
+  --list)
+    tmux list-sessions 2>/dev/null || echo "No tmux sessions"
+    ;;
+  --kill)
+    session=$(pick_session) || exit 0
+    tmux kill-session -t "$session" && echo "Killed: $session"
+    ;;
+  "")
+    dir=$(pick_dir) || exit 0
+    [ -n "$dir" ] && create_or_switch "$dir"
+    ;;
+  *)
+    if [ -d "$1" ]; then
+      create_or_switch "$1"
+    else
+      create_or_switch "$SCAN_DIR/$1"
+    fi
+    ;;
+esac
