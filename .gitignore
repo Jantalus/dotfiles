@@ -4,6 +4,7 @@
 
 # Root files
 !.gitignore
+!CLAUDE.md
 !install.sh
 
 # tmux
