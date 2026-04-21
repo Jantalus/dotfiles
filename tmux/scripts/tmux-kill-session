@@ -1,7 +1,7 @@
-#!/bin/bash
-target="$1"
+#!/usr/bin/env bash
+target="${1%% *}"
 current=$(tmux display-message -p '#S')
 if [ "$current" = "$target" ]; then
-    tmux switch-client -n 2>/dev/null || tmux switch-client -l 2>/dev/null
+  tmux switch-client -n 2>/dev/null || tmux switch-client -l 2>/dev/null
 fi
 tmux kill-session -t "$target"

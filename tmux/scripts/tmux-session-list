@@ -1,4 +1,15 @@
 #!/usr/bin/env bash
-# Outputs: session_name\tdisplay_label (with ⏳ if claude is waiting)
-tmux ls -F '#{session_name}\t#{@claude_waiting}' 2>/dev/null \
-  | awk -F'\t' '{print $1 "\t" $1 ($2=="1" ? " ⏳" : "")}'
+tmux ls -F '#{session_name}' 2>/dev/null | while read -r name; do
+  waiting=$(tmux show-option -t "$name" @claude_waiting 2>/dev/null | awk '{print $2}')
+  if [ "$waiting" = "1" ]; then
+    # Validate: only show ⏳ if claude is actually still running in this session
+    if tmux list-panes -t "$name" -a -F '#{pane_current_command}' 2>/dev/null | grep -q '^claude$'; then
+      echo "$name ⏳"
+    else
+      tmux set-option -ut "$name" @claude_waiting 2>/dev/null
+      echo "$name"
+    fi
+  else
+    echo "$name"
+  fi
+done

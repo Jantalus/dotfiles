@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+session="${1%% *}"
+client=$(tmux list-clients -F '#{client_name}' 2>/dev/null | grep '^/dev/' | head -1)
+if [ -n "$client" ]; then
+  exec tmux switch-client -c "$client" -t "$session"
+else
+  exec tmux switch-client -t "$session"
+fi
