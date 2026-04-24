@@ -89,6 +89,8 @@ return {
   -- treesitter, mason and typescript.nvim. So instead of the above [already deleted], you can use:
   { import = "lazyvim.plugins.extras.lang.typescript" },
   { import = "lazyvim.plugins.extras.lang.go" },
+  { import = "lazyvim.plugins.extras.dap.core" },
+  { import = "lazyvim.plugins.extras.test.core" },
 
   -- add more treesitter parsers
   {

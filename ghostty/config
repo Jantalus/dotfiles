@@ -1,5 +1,6 @@
 # ── Font ─────────────────────────────────────────────────────────────────────
 font-family = "JetBrainsMono Nerd Font"
+font-codepoint-map = U+1F1E6-U+1F1FF=Apple Color Emoji
 font-size = 14
 
 # ── Window ───────────────────────────────────────────────────────────────────
