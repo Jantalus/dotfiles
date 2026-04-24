@@ -6,6 +6,7 @@
 !.gitignore
 !CLAUDE.md
 !install.sh
+!*.rayconfig
 
 # tmux
 !tmux/
@@ -18,3 +19,7 @@
 # ghostty
 !ghostty/
 !ghostty/**
+
+# raycast
+!raycast/
+!raycast/**
