@@ -35,6 +35,17 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       require("harpoon").setup()
+
+      local mark = require("harpoon.mark")
+      local ui = require("harpoon.ui")
+      local map = vim.keymap.set
+
+      map("n", "<leader>ha", mark.add_file, { desc = "Harpoon add file" })
+      map("n", "<leader>hh", ui.toggle_quick_menu, { desc = "Harpoon menu" })
+
+      for i = 1, 9 do
+        map("n", "<leader>" .. i, function() ui.nav_file(i) end, { desc = "Harpoon file " .. i })
+      end
     end,
   },
 
@@ -48,30 +59,7 @@ return {
   --   end,
   -- },
 
-  -- change some telescope options and a keymap to browse plugin files
-  {
-    "nvim-telescope/telescope.nvim",
-    keys = {
-      -- add a keymap to browse plugin files
-      -- stylua: ignore
-      {
-        "<leader>fp",
-        function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,
-        desc = "Find Plugin File",
-      },
-    },
-    -- change some options
-    opts = {
-      defaults = {
-        layout_strategy = "horizontal",
-        layout_config = { prompt_position = "top" },
-        sorting_strategy = "ascending",
-        winblend = 0,
-      },
-    },
-  },
-
-  -- add pyright to lspconfig
+-- add pyright to lspconfig
   {
     "neovim/nvim-lspconfig",
     ---@class PluginLspOpts
@@ -85,12 +73,6 @@ return {
     },
   },
 
-  -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
-  -- treesitter, mason and typescript.nvim. So instead of the above [already deleted], you can use:
-  { import = "lazyvim.plugins.extras.lang.typescript" },
-  { import = "lazyvim.plugins.extras.lang.go" },
-  { import = "lazyvim.plugins.extras.dap.core" },
-  { import = "lazyvim.plugins.extras.test.core" },
 
   -- add more treesitter parsers
   {
@@ -154,15 +136,8 @@ return {
   --   end,
   -- },
 
-  -- use mini.starter instead of alpha
-  { import = "lazyvim.plugins.extras.ui.mini-starter" },
-
-  -- add jsonls and schemastore packages, and setup treesitter for json, json5 and jsonc
-  { import = "lazyvim.plugins.extras.lang.json" },
-
-  -- add any tools you want to have installed below
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = {
       ensure_installed = {
         "stylua",
