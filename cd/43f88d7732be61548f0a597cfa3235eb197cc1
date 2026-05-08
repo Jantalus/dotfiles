@@ -1,0 +1,65 @@
+tmux/tmux.conf
+  s_0cec60fb9e0d36::t_fd9d2abaf047a2 2,4
+tmux/scripts/px
+  569627b07c7af354 24,26-29,57-60,62,64-72
+  s_465bdd117db7e9::t_7800784519d1ea 25
+  529e62c74ee69b84 33-35
+  s_5fd44429c6bff2::t_f0d0864dbd8c0f 18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "cd43f88d7732be61548f0a597cfa3235eb197cc1",
+  "prompts": {
+    "529e62c74ee69b84": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ccbe733c-9e55-4db8-b656-7fdf977052a5",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "569627b07c7af354": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f4caaf66-d4f2-4727-8cd8-7e6e1ff5593a",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 19,
+      "overriden_lines": 0
+    }
+  },
+  "sessions": {
+    "s_0cec60fb9e0d36": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aaaa5072-87b7-4632-87af-a787f4408e8f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_465bdd117db7e9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aed9ff09-6e8b-4ec9-8441-cdffc8b3d2ff",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_5fd44429c6bff2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5b880155-4f29-47d0-acb3-6b9a3d89b671",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
