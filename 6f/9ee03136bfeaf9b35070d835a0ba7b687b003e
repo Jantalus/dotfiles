@@ -1,0 +1,140 @@
+nvim/lua/plugins/copilot.lua
+  s_a2593274ec7af0::t_3e9c422ad74daf 1-4,13-14
+  s_a2593274ec7af0::t_5f74eb25273783 5-12
+nvim/lua/plugins/markdown-preview.lua
+  61de028caff1c263 1-4,6
+  s_943793f322a672::t_9894b5b09daf85 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "6f9ee03136bfeaf9b35070d835a0ba7b687b003e",
+  "prompts": {
+    "2d0ee760923124f9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b339d10-a1b9-448e-bc12-4cc646b32a87",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 2,
+      "total_deletions": 0,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    },
+    "529e62c74ee69b84": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ccbe733c-9e55-4db8-b656-7fdf977052a5",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 3,
+      "total_deletions": 1,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "569627b07c7af354": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f4caaf66-d4f2-4727-8cd8-7e6e1ff5593a",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 19,
+      "total_deletions": 6,
+      "accepted_lines": 19,
+      "overriden_lines": 0
+    },
+    "61de028caff1c263": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4cea9ca9-9351-4600-b6d4-f0587e564296",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 12,
+      "total_deletions": 4,
+      "accepted_lines": 5,
+      "overriden_lines": 0
+    },
+    "7ed7efc6daa80378": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "94c87ad6-42e2-4a72-9df3-9403473ad1c2",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 15,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "a1e0d094bea0d0f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d331099e-859a-4afe-9811-181dd43d8ef3",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 14,
+      "total_deletions": 102,
+      "accepted_lines": 9,
+      "overriden_lines": 0
+    },
+    "b36b9701be178a37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "90af70e7-3161-45db-82aa-11ba2d549182",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 3,
+      "total_deletions": 3,
+      "accepted_lines": 1,
+      "overriden_lines": 1
+    },
+    "b4cbbab0c6f5cd29": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "56657d8c-1339-48ae-a57f-60c175c0c916",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "fe62299e55586b4e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ee226a71-a628-4671-bd33-efbe258930c4",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>",
+      "total_additions": 119,
+      "total_deletions": 123,
+      "accepted_lines": 25,
+      "overriden_lines": 0
+    }
+  },
+  "sessions": {
+    "s_943793f322a672": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a58eb81e-4792-4919-af73-73642dc2a39c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_a2593274ec7af0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "092859e5-6178-4b4e-be33-2998ecaa81a5",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
