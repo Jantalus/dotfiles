@@ -13,8 +13,16 @@ SCAN_DIR="$HOME/Desktop/Pricing"
 
 # Direct: each path becomes its own session
 DIRECT_DIRS=(
+  "$HOME/.config"
   "$HOME/.config/nvim"
+  "$HOME/Desktop"
   "$HOME/Desktop/Pricing/Scripts"
+  "$HOME/Desktop/Pricing/bigquery"
+  "$HOME/Desktop/Pricing/jira"
+)
+
+NO_NVIM_DIRS=(
+  "$HOME/Desktop"
   "$HOME/Desktop/Pricing/bigquery"
   "$HOME/Desktop/Pricing/jira"
 )
@@ -22,7 +30,9 @@ DIRECT_DIRS=(
 session_name_for() {
   local base
   base=$(basename "$1")
-  echo "${base#fury_}"
+  base="${base#fury_}"
+  base="${base#.}"
+  echo "$base"
 }
 
 create_or_switch() {
@@ -44,14 +54,22 @@ create_or_switch() {
     return
   fi
 
+  local no_nvim=false
+  for no_nvim_dir in "${NO_NVIM_DIRS[@]}"; do
+    [[ "$dir" == "$no_nvim_dir" ]] && no_nvim=true && break
+  done
+
   tmux new-session -d -s "$session" -c "$dir" -n "work"
-  tmux send-keys -t "${session}:work" "nvim ." Enter
 
-  tmux split-window -t "${session}:work" -h -c "$dir"
-  tmux send-keys -t "${session}:work" "claude" Enter
-
-  tmux resize-pane -t "${session}:work.left" -x "65%"
-  tmux select-pane -t "${session}:work.left"
+  if $no_nvim; then
+    tmux send-keys -t "${session}:work" "claude" Enter
+  else
+    tmux send-keys -t "${session}:work" "nvim ." Enter
+    tmux split-window -t "${session}:work" -h -c "$dir"
+    tmux send-keys -t "${session}:work" "claude" Enter
+    tmux resize-pane -t "${session}:work.left" -x "65%"
+    tmux select-pane -t "${session}:work.left"
+  fi
 
   echo "Created session: $session"
 
@@ -74,48 +92,51 @@ all_dirs() {
 pick_dir() {
   local choice
   choice=$(
-    { printf '[custom path]\t__custom__\n'; all_dirs | awk -F'/' '{print $NF "\t" $0}'; } \
-      | fzf --prompt="repo > " --height=40% --border \
-            --delimiter=$'\t' --with-nth=1 \
-      | cut -f2
+    {
+      printf '[custom path]\t__custom__\n'
+      all_dirs | awk -F'/' '{print $NF "\t" $0}'
+    } |
+      fzf --prompt="repo > " --height=40% --border \
+        --delimiter=$'\t' --with-nth=1 |
+      cut -f2
   )
 
   if [ "$choice" = "__custom__" ]; then
     choice=$(fzf --prompt="path > " --border --height=40% \
-                 --walker=dir,follow --walker-root="$HOME" </dev/tty)
+      --walker=dir,follow --walker-root="$HOME" </dev/tty)
   fi
 
   echo "$choice"
 }
 
 pick_session() {
-  tmux list-sessions -F '#{session_name}' 2>/dev/null \
-    | fzf --prompt="session > " --height=40% --border
+  tmux list-sessions -F '#{session_name}' 2>/dev/null |
+    fzf --prompt="session > " --height=40% --border
 }
 
 case "${1:-}" in
-  --all)
-    while IFS= read -r dir; do
-      create_or_switch "$dir" &
-    done < <(all_dirs)
-    wait
-    ;;
-  --list)
-    tmux list-sessions 2>/dev/null || echo "No tmux sessions"
-    ;;
-  --kill)
-    session=$(pick_session) || exit 0
-    tmux kill-session -t "$session" && echo "Killed: $session"
-    ;;
-  "")
-    dir=$(pick_dir) || exit 0
-    [ -n "$dir" ] && create_or_switch "$dir"
-    ;;
-  *)
-    if [ -d "$1" ]; then
-      create_or_switch "$1"
-    else
-      create_or_switch "$SCAN_DIR/$1"
-    fi
-    ;;
+--all)
+  while IFS= read -r dir; do
+    create_or_switch "$dir" &
+  done < <(all_dirs)
+  wait
+  ;;
+--list)
+  tmux list-sessions 2>/dev/null || echo "No tmux sessions"
+  ;;
+--kill)
+  session=$(pick_session) || exit 0
+  tmux kill-session -t "$session" && echo "Killed: $session"
+  ;;
+"")
+  dir=$(pick_dir) || exit 0
+  [ -n "$dir" ] && create_or_switch "$dir"
+  ;;
+*)
+  if [ -d "$1" ]; then
+    create_or_switch "$1"
+  else
+    create_or_switch "$SCAN_DIR/$1"
+  fi
+  ;;
 esac
