@@ -1,0 +1,29 @@
+tmux/tmux.conf
+  s_cce8db810a1fc8::t_f04d9c7eee2a7c 20-22
+  s_cce8db810a1fc8::t_3a0516c6d2f22e 27
+  s_cce8db810a1fc8::t_c8e20e43b4e8c6 23-26
+  s_cce8db810a1fc8::t_0540d18cca58ef 28-30
+tmux/scripts/tmux-open-url
+  s_cce8db810a1fc8::t_4b31905f4abf20 16
+  s_cce8db810a1fc8::t_0370993f479327 15,17
+  s_cce8db810a1fc8::t_ff777283233ae0 1,7,12-13,26
+  s_cce8db810a1fc8::t_c542472b856929 2-3,6,9-10,14,18-20,22-25
+  s_cce8db810a1fc8::t_c1e3f774c06fba 4-5,8
+  s_cce8db810a1fc8::t_6762f15ae93450 11,21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "01459e92747a55b9d41072f40d3adf88997db9ad",
+  "prompts": {},
+  "sessions": {
+    "s_cce8db810a1fc8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dcb590a6-38b3-4fc3-b900-302978cdb849",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
