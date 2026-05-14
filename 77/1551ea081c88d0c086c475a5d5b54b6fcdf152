@@ -1,0 +1,40 @@
+nvim/lua/config/autocmds.lua
+  s_bba81a0c2c390d::t_bd9ec732da8740 3-13
+nvim/lua/plugins/copilot.lua
+  s_70ab4f6e9957ea::t_4c2f65eccd51b0 9-11
+ghostty/config
+  s_7fbfc0458aae11::t_d136466d958a09 34
+  s_70ab4f6e9957ea::t_47560a1a966ecf 35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "771551ea081c88d0c086c475a5d5b54b6fcdf152",
+  "prompts": {},
+  "sessions": {
+    "s_70ab4f6e9957ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec6cf3e3-50fb-40d5-8057-add6e1e13db2",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_7fbfc0458aae11": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "db48919c-72b5-4ca7-a682-58e98c31804b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_bba81a0c2c390d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cab6aadf-6b1e-40df-a80d-69b330a04ab9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
