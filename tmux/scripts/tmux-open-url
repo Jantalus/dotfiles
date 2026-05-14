@@ -1,0 +1,26 @@
+#!/bin/bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+pane=$(cat /tmp/tmux-url-pane 2>/dev/null)
+log="/tmp/tmux-pane-${pane}"
+
+if [[ ! -f "$log" ]]; then
+  echo "No URL log for pane ${pane}."
+  echo "Run this in the pane first:"
+  echo "  tmux pipe-pane -o \"cat >> $log\""
+  read -rsn1
+  exit 1
+fi
+
+osc8=$(perl -0777 -ne 'while (/\x1b\]8;;(https?:\/\/[^\x1b\x07]+)/g) { print "$1\n" }' "$log")
+plain=$(perl -0777 -ne 'while (/(https?:\/\/[^\s\x1b\x07"'"'"'<>)]+)/g) { print "$1\n" }' "$log")
+urls=$(printf '%s\n%s' "$osc8" "$plain" | sort -u | grep .)
+
+if [[ -z "$urls" ]]; then
+  echo "No OSC 8 URLs found in log (log size: $(wc -c < "$log") bytes)"
+  read -rsn1
+  exit 1
+fi
+
+url=$(echo "$urls" | fzf --prompt="open > ")
+[[ -n "$url" ]] && open "$url"
