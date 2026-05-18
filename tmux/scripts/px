@@ -19,6 +19,7 @@ DIRECT_DIRS=(
   "$HOME/Desktop/Pricing/Scripts"
   "$HOME/Desktop/Pricing/bigquery"
   "$HOME/Desktop/Pricing/jira"
+  "$HOME/Desktop/Facu/tesis"
 )
 
 NO_NVIM_DIRS=(
