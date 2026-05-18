@@ -1,0 +1,19 @@
+tmux/scripts/px
+  s_c58f3b55841630::t_60405adefe7485 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "999123f219dce5394bc200918afee9df21acf18b",
+  "prompts": {},
+  "sessions": {
+    "s_c58f3b55841630": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7d44dd3e-04c1-467d-985c-7cefb0ea9ffa",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
