@@ -1,0 +1,19 @@
+tmux/scripts/tmux-open-url
+  s_14acec58748797::t_59bf370f5f76de 17-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "b54a40efcd2674aa1eb496486806400c127c2420",
+  "prompts": {},
+  "sessions": {
+    "s_14acec58748797": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "862f9243-f426-418c-98f0-013cafacaa57",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
