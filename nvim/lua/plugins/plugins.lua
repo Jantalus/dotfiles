@@ -40,6 +40,8 @@ return {
       local ui = require("harpoon.ui")
       local map = vim.keymap.set
 
+      require("which-key").add({ { "<leader>h", group = "harpoon", icon = "󰀱" } })
+
       map("n", "<leader>ha", mark.add_file, { desc = "Harpoon add file" })
       map("n", "<leader>hh", ui.toggle_quick_menu, { desc = "Harpoon menu" })
 
@@ -135,6 +137,13 @@ return {
   --     }
   --   end,
   -- },
+
+  {
+    "szw/vim-maximizer",
+    keys = {
+      { "<C-w>m", "<cmd>MaximizerToggle<cr>", desc = "Maximize window" },
+    },
+  },
 
   {
     "mason-org/mason.nvim",
