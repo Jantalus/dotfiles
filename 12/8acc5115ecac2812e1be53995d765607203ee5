@@ -1,0 +1,23 @@
+nvim/lua/plugins/java.lua
+  s_67e51db349df24::t_26c9082d7b4586 48-50
+  s_67e51db349df24::t_120c2120094580 7,9-14,22,31-34,60
+  s_67e51db349df24::t_3cd9bfd477ae7e 1-6,8,15-21,23-30,35-42,54-59,61-69
+  s_67e51db349df24::t_a725a1f1a45c90 43-44,46-47,51-53
+  s_67e51db349df24::t_9482419725be0e 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "128acc5115ecac2812e1be53995d765607203ee5",
+  "prompts": {},
+  "sessions": {
+    "s_67e51db349df24": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "177d7994-74a3-41b5-8706-0d283ceaef19",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
