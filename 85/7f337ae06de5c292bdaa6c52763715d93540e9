@@ -1,0 +1,21 @@
+nvim/lua/plugins/dap.lua
+  s_9de7b144f0ed50::t_92830f1e6b313f 50-56,64
+  s_9de7b144f0ed50::t_d87777d464b10a 45
+  s_9de7b144f0ed50::t_03034d7be351cf 39,43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "857f337ae06de5c292bdaa6c52763715d93540e9",
+  "prompts": {},
+  "sessions": {
+    "s_9de7b144f0ed50": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bb8886a3-2501-4ada-8a95-d1503a487f41",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
