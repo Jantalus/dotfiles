@@ -1,0 +1,30 @@
+nvim/lua/plugins/plugins.lua
+  s_56649ff1e001e0::t_b55a604c212a48 144
+  s_a7c31aeb76774b::t_966ee5b2c6cd42 43
+  s_56649ff1e001e0::t_4c7dc831243bf9 142-143,145-147
+  s_a7c31aeb76774b::t_db81e0a8d35911 44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "9a0ccd1211697c296258cff45a9f319aac057c0d",
+  "prompts": {},
+  "sessions": {
+    "s_56649ff1e001e0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eab621b1-ca64-465c-a8e5-6e7f6e5af7c9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_a7c31aeb76774b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "923428d7-39d5-42fd-b098-e251f601b058",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
