@@ -1,0 +1,19 @@
+tmux/tmux.conf
+  s_737aec90b1821c::t_95d9478868e677 43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "524acd885a20f666ded456d968883799a7e9217c",
+  "prompts": {},
+  "sessions": {
+    "s_737aec90b1821c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be8d13ee-9b90-4bb3-9cfc-4f2354dd1704",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
