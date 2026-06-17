@@ -36,33 +36,24 @@ return {
       local dapui = require("dapui")
       dapui.setup(opts)
 
-      -- Open UI on session start; never auto-close on exit
+      -- Open UI on session start and whenever execution stops (breakpoint, step, exception)
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open({})
+      end
+      dap.listeners.after.event_stopped["dapui_config"] = function()
+        dapui.open({})
+        vim.fn.jobstart({ "osascript", "-e", 'tell application "Ghostty" to activate' })
       end
       dap.listeners.before.event_terminated["dapui_config"] = nil
       dap.listeners.before.event_exited["dapui_config"] = nil
 
-      -- Surface program output as notifications
-      dap.listeners.after.event_output["dapui_errors"] = function(_, body)
-        local msg = vim.trim(body.output or "")
-        if msg == "" then return end
-        if body.category == "stderr" or body.category == "console" or body.category == "important" then
-          vim.notify(msg, vim.log.levels.WARN, { title = "DAP" })
-        elseif body.category == "stdout" then
-          vim.notify(msg, vim.log.levels.INFO, { title = "DAP" })
-        end
-      end
-
-      -- Defer provider wrap: nvim-dap's own config (which registers the vscode
-      -- provider) runs after this config, so we patch it on the next tick.
-      vim.defer_fn(function()
-        local orig = dap.providers
-          and dap.providers.configs
-          and dap.providers.configs["dap.ext.vscode"]
-        if not orig then return end
-        dap.providers.configs["dap.ext.vscode"] = function(bufnr)
-          local cfgs = orig(bufnr)
+      -- Inject outputMode="remote" into Go configs from launch.json so that
+      -- program stdout/stderr comes through DAP OutputEvents to the console panel.
+      -- The key is "dap.launch.json" (not "dap.ext.vscode" which no longer exists).
+      local orig = dap.providers.configs["dap.launch.json"]
+      if orig then
+        dap.providers.configs["dap.launch.json"] = function()
+          local cfgs = orig()
           for _, cfg in ipairs(cfgs or {}) do
             if cfg.type == "go" and not cfg.outputMode then
               cfg.outputMode = "remote"
@@ -70,7 +61,7 @@ return {
           end
           return cfgs
         end
-      end, 0)
+      end
     end,
   },
 }
