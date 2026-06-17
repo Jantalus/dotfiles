@@ -14,7 +14,8 @@ fi
 
 osc8=$(perl -0777 -ne 'while (/\x1b\]8;;(https?:\/\/[^\x1b\x07]+)/g) { print "$1\n" }' "$log")
 plain=$(perl -0777 -ne 'while (/(https?:\/\/[^\s\x1b\x07"'"'"'<>)]+)/g) { print "$1\n" }' "$log")
-urls=$(printf '%s\n%s' "$osc8" "$plain" | sort -u | grep .)
+scrollback=$(tmux capture-pane -p -S - -t "$pane" 2>/dev/null | perl -0777 -ne 'while (/(https?:\/\/[^\s"'"'"'<>)]+)/g) { print "$1\n" }')
+urls=$(printf '%s\n%s\n%s' "$osc8" "$plain" "$scrollback" | sort -u | grep .)
 
 if [[ -z "$urls" ]]; then
   echo "No OSC 8 URLs found in log (log size: $(wc -c < "$log") bytes)"
