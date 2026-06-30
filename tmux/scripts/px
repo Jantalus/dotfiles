@@ -20,12 +20,22 @@ DIRECT_DIRS=(
   "$HOME/Desktop/Pricing/bigquery"
   "$HOME/Desktop/Pricing/jira"
   "$HOME/Desktop/Facu/tesis"
+  "$HOME/Desktop/Bruno"
+  "$HOME/Desktop/db"
 )
 
 NO_NVIM_DIRS=(
   "$HOME/Desktop"
   "$HOME/Desktop/Pricing/bigquery"
   "$HOME/Desktop/Pricing/jira"
+)
+
+KULALA_DIRS=(
+  "$HOME/Desktop/Bruno"
+)
+
+DB_DIRS=(
+  "$HOME/Desktop/db"
 )
 
 session_name_for() {
@@ -60,9 +70,26 @@ create_or_switch() {
     [[ "$dir" == "$no_nvim_dir" ]] && no_nvim=true && break
   done
 
+  local is_kulala=false
+  for kulala_dir in "${KULALA_DIRS[@]}"; do
+    [[ "$dir" == "$kulala_dir" ]] && is_kulala=true && break
+  done
+
+  local is_db=false
+  for db_dir in "${DB_DIRS[@]}"; do
+    [[ "$dir" == "$db_dir" ]] && is_db=true && break
+  done
+
   tmux new-session -d -s "$session" -c "$dir" -n "work"
 
-  if $no_nvim; then
+  if $is_db; then
+    tmux send-keys -t "${session}:work" "nvim -c 'DBUIToggle'" Enter
+  elif $is_kulala; then
+    tmux send-keys -t "${session}:work" "nvim ." Enter
+    tmux split-window -t "${session}:work" -h -c "$dir"
+    tmux resize-pane -t "${session}:work.left" -x "65%"
+    tmux select-pane -t "${session}:work.left"
+  elif $no_nvim; then
     tmux send-keys -t "${session}:work" "claude" Enter
   else
     tmux send-keys -t "${session}:work" "nvim ." Enter
