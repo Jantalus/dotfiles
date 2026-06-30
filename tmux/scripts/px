@@ -86,9 +86,6 @@ create_or_switch() {
     tmux send-keys -t "${session}:work" "nvim -c 'DBUIToggle'" Enter
   elif $is_kulala; then
     tmux send-keys -t "${session}:work" "nvim ." Enter
-    tmux split-window -t "${session}:work" -h -c "$dir"
-    tmux resize-pane -t "${session}:work.left" -x "65%"
-    tmux select-pane -t "${session}:work.left"
   elif $no_nvim; then
     tmux send-keys -t "${session}:work" "claude" Enter
   else
