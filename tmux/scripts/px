@@ -20,7 +20,7 @@ DIRECT_DIRS=(
   "$HOME/Desktop/Pricing/bigquery"
   "$HOME/Desktop/Pricing/jira"
   "$HOME/Desktop/Facu/tesis"
-  "$HOME/Desktop/Bruno"
+  "$HOME/Desktop/http"
   "$HOME/Desktop/db"
 )
 
@@ -31,7 +31,7 @@ NO_NVIM_DIRS=(
 )
 
 KULALA_DIRS=(
-  "$HOME/Desktop/Bruno"
+  "$HOME/Desktop/http"
 )
 
 DB_DIRS=(
