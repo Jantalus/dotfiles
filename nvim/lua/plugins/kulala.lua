@@ -26,6 +26,10 @@ return {
       icons = {
         inlay = { loading = "⏳", done = "✓", error = "✗" },
       },
+      kulala_keymaps = {
+        ["Previous tab"] = { "<Tab>",   function() require("kulala.ui").show_previous_tab() end, mode = { "n" }, prefix = false },
+        ["Next tab"]     = { "<S-Tab>", function() require("kulala.ui").show_next_tab() end,     mode = { "n" }, prefix = false },
+      },
     },
   },
 
