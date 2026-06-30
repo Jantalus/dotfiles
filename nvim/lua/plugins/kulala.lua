@@ -29,6 +29,7 @@ return {
       kulala_keymaps = {
         ["Previous tab"] = { "<S-Tab>", function() require("kulala.ui").show_previous_tab() end, mode = { "n" }, prefix = false },
         ["Next tab"]     = { "<Tab>",   function() require("kulala.ui").show_next_tab() end,     mode = { "n" }, prefix = false },
+        ["Show verbose"] = false,
       },
     },
   },
