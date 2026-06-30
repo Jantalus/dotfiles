@@ -1,0 +1,19 @@
+nvim/lua/plugins/kulala.lua
+  s_fbbfd486d30dc2::t_450b7fd6e043ed 29-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "ce4881fc1ee3cc612f21efc1a76034f460c2f1f5",
+  "prompts": {},
+  "sessions": {
+    "s_fbbfd486d30dc2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8689f61f-d1dc-4467-9a0a-6a38e3ac3bac",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
