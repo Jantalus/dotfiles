@@ -1,0 +1,46 @@
+nvim/lua/plugins/kulala.lua
+  s_fbbfd486d30dc2::t_fb1e5c6a00005b 1-39
+tmux/scripts/px
+  s_fbbfd486d30dc2::t_24a076c637bf9e 23,33-34
+  s_544c2814d633aa::t_7bc0217fcf6be3 24
+  s_544c2814d633aa::t_42bd161fa90def 78-80,85-86
+  s_fbbfd486d30dc2::t_204cd2dae80728 87-91
+  s_3cde08814efd0d::t_e3bda475cfb5f1 35-36
+  s_fbbfd486d30dc2::t_9b8872d92230d5 73-75
+  s_544c2814d633aa::t_d776a097b49d81 81-82
+  s_3cde08814efd0d::t_d8c6448ea9ed15 76-77,92
+  s_544c2814d633aa::t_7f186511aedb24 37
+  s_544c2814d633aa::t_78d86a836735d3 38-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "13502ed050500eddf99552c83ab7cdde91f26fb2",
+  "prompts": {},
+  "sessions": {
+    "s_3cde08814efd0d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bb2cf5d6-9fc7-41de-98e7-8eb9ab0da17e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_544c2814d633aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "116fde48-8b98-47c0-8cdb-5bb102596841",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_fbbfd486d30dc2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8689f61f-d1dc-4467-9a0a-6a38e3ac3bac",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
