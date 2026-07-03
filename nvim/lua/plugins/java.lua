@@ -16,8 +16,15 @@ return {
         local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
         local workspace = vim.fn.stdpath("data") .. "/jdtls-workspaces/" .. project_name
 
+        local lombok_jars = vim.fn.glob(vim.fn.expand("~/.m2") .. "/repository/org/projectlombok/lombok/*/lombok-*.jar", false, true)
+        local lombok_jar = lombok_jars[#lombok_jars] or ""
+
         jdtls.start_or_attach({
-          cmd = { vim.fn.stdpath("data") .. "/mason/bin/jdtls", "-data", workspace },
+          cmd = {
+            vim.fn.stdpath("data") .. "/mason/bin/jdtls",
+            "-data", workspace,
+            "--jvm-arg=-javaagent:" .. lombok_jar,
+          },
           root_dir = jdtls.setup.find_root({ "pom.xml", "build.gradle", ".git" }),
           init_options = { bundles = bundles },
           settings = {
