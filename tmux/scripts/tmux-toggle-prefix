@@ -1,0 +1,15 @@
+#!/bin/bash
+mode=$(tmux show-option -gqv @prefix_mode)
+if [ "$mode" = "ctrl-space" ]; then
+    tmux set -g prefix "'"
+    tmux unbind C-Space
+    tmux bind "'" send-prefix
+    tmux set -g @prefix_mode "apostrophe"
+    tmux set -g @prefix_label "'"
+else
+    tmux set -g prefix C-Space
+    tmux unbind "'"
+    tmux bind C-Space send-prefix
+    tmux set -g @prefix_mode "ctrl-space"
+    tmux set -g @prefix_label "^SPC"
+fi
