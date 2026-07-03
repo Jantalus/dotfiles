@@ -12,12 +12,17 @@ return {
       { "<leader>Ri", function() require("kulala").inspect() end,                 desc = "Inspect request", ft = "http" },
       { "<leader>Rc", function() require("kulala").copy() end,                    desc = "Copy as curl",    ft = "http" },
       { "<leader>Rx", function() require("kulala").close() end,                   desc = "Close response",  ft = "http" },
+      { "<leader>RI", function() require("kulala").from_curl() end,               desc = "Import from curl", ft = "http" },
+      { "<CR>",       function() require("kulala").run() end,                     desc = "Run request",     ft = "http" },
     },
     opts = {
       default_env = "dev",
       debug = false,
       display_mode = "split",
       split_direction = "vertical",
+      ui = {
+        max_response_size = 5 * 1024 * 1024,
+      },
       formatters = {
         json = { "jq", "." },
         xml  = { "xmllint", "--format", "-" },
