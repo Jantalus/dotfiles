@@ -1,0 +1,20 @@
+raycast/scripts/tmux-http-session.sh
+  s_e874d7f5b29ab6::t_3eec4bf3f78711 8-10
+  s_e874d7f5b29ab6::t_99db684a456b39 1-7,11-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "17a5a30f6ea32eb7a058cdf67dc9bbc17bf6a472",
+  "prompts": {},
+  "sessions": {
+    "s_e874d7f5b29ab6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0ab60ef6-a809-4723-a1d7-6039bbf9abc0",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
