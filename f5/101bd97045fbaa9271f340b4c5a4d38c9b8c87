@@ -1,0 +1,19 @@
+.gitignore
+  s_968bff19b527b8::t_a611a01b1f16a6 14,27-29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "f5101bd97045fbaa9271f340b4c5a4d38c9b8c87",
+  "prompts": {},
+  "sessions": {
+    "s_968bff19b527b8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "af414aa6-30c1-471c-b80d-5d4791a3421c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
