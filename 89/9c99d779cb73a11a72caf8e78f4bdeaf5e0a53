@@ -1,0 +1,31 @@
+nvim/lua/plugins/dadbod.lua
+  s_544c2814d633aa::t_597a35212fc2ff 10-13
+  s_2481e5c7d1e0b2::t_90efe72fb397bd 49
+  s_544c2814d633aa::t_c40800b872c1cb 1-5,16-41,43-48,58-61
+  s_2481e5c7d1e0b2::t_bd5af9f0e92e18 6-9,14-15,50-57
+  s_2481e5c7d1e0b2::t_d81043bee084a3 42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "899c99d779cb73a11a72caf8e78f4bdeaf5e0a53",
+  "prompts": {},
+  "sessions": {
+    "s_2481e5c7d1e0b2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c9d15006-9dec-4796-aa38-c63c596ab8f9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_544c2814d633aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "116fde48-8b98-47c0-8cdb-5bb102596841",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
