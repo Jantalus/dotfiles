@@ -11,6 +11,7 @@
 # tmux
 !tmux/
 !tmux/**
+tmux/plugins/
 
 # nvim
 !nvim/
@@ -23,3 +24,6 @@
 # raycast
 !raycast/
 !raycast/**
+raycast/ai/
+raycast/extensions/
+raycast/.DS_Store
