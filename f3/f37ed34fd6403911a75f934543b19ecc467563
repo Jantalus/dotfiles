@@ -1,0 +1,20 @@
+tmux/scripts/ghostty-set-theme
+  s_968bff19b527b8::t_7d39a3c6e73ee2 1-9,13,18-24,31-33
+  s_968bff19b527b8::t_376b3d59e36e6b 10-12,14-17,25-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "f3f37ed34fd6403911a75f934543b19ecc467563",
+  "prompts": {},
+  "sessions": {
+    "s_968bff19b527b8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "af414aa6-30c1-471c-b80d-5d4791a3421c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
