@@ -1,0 +1,55 @@
+tmux/tmux.conf
+  s_968bff19b527b8::t_1921d303097625 9
+  s_330e6d0ade6d19::t_63c6ea4b4020b9 45,47
+  s_8a5010132109b3::t_f6e90a269a13f8 50
+  s_0027012c9486bd::t_f8117f6fedc029 2,4-8
+  s_0027012c9486bd::t_92e9d9172ca3cb 74
+tmux/scripts/tmux-toggle-prefix
+  s_0027012c9486bd::t_26d9d74be9b372 1-15
+tmux/scripts/tmux-toggle-theme
+  s_968bff19b527b8::t_dfd44eb7fe1963 1-10,12-13,15,18-21
+  s_968bff19b527b8::t_6ed65f2808e1d2 11,14,24
+  s_968bff19b527b8::t_0a9d44c887d121 23
+  s_968bff19b527b8::t_533c9176e06f38 16-17
+  s_968bff19b527b8::t_93090617e819be 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "cec37087aee0a9637644feba105f8adcded72bcf",
+  "prompts": {},
+  "sessions": {
+    "s_0027012c9486bd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c1e83bf3-13e4-4695-8ec0-ce870af16332",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_330e6d0ade6d19": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5727f8f9-513f-4455-ae16-1b45a1e6e798",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_8a5010132109b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c96d2916-cdf3-45ae-b1c6-b5902dd31065",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    },
+    "s_968bff19b527b8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "af414aa6-30c1-471c-b80d-5d4791a3421c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "mgiampaolo_meli <matias.giampaolo@mercadolibre.com>"
+    }
+  }
+}
