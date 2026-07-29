@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+# tmux-worktree-picker — browse and create git worktrees as tmux windows
+# display-popup inherits the active pane's CWD, so $PWD is the pane's directory.
+
+SESSION=$(tmux display-message -p '#S')
+GIT_ROOT=$(git -C "$PWD" rev-parse --show-toplevel 2>/dev/null)
+
+if [ -z "$GIT_ROOT" ]; then
+  tmux display-message "Not a git repo: $PWD"
+  exit 1
+fi
+
+_ai_cmd() {
+  local cli
+  cli=$(tmux show-option -gv @ai_cli 2>/dev/null)
+  case "$cli" in codex | claude) echo "$cli" ;; *) echo "claude" ;; esac
+}
+
+_win_name() { echo "${1//\//-}"; }
+
+_worktrees() {
+  git -C "$GIT_ROOT" worktree list --porcelain | awk '
+    /^worktree / { path = substr($0, 10) }
+    /^branch /   { branch = substr($0, 8); sub("refs/heads/", "", branch) }
+    /^detached$/ { branch = "detached" }
+    /^$/         { if (path) { print path "\t" branch }; path = ""; branch = "" }
+    END          { if (path) { print path "\t" branch } }
+  '
+}
+
+_open_window() {
+  local wt_path="$1" win_name="$2"
+
+  if tmux list-windows -t "$SESSION" -F '#{window_name}' 2>/dev/null | grep -qxF "$win_name"; then
+    tmux select-window -t "${SESSION}:${win_name}"
+    return
+  fi
+
+  local cli
+  cli=$(_ai_cmd)
+  tmux new-window -t "$SESSION" -n "$win_name" -c "$wt_path"
+  tmux send-keys -t "${SESSION}:${win_name}" "nvim ." Enter
+  tmux split-window -t "${SESSION}:${win_name}" -h -c "$wt_path"
+  tmux send-keys -t "${SESSION}:${win_name}" "$cli" Enter
+  tmux resize-pane -t "${SESSION}:${win_name}.left" -x "65%"
+  tmux select-pane -t "${SESSION}:${win_name}.left"
+  tmux select-window -t "${SESSION}:${win_name}"
+}
+
+_remove() {
+  local wt_path="$1" branch="$2"
+  local win_name
+  win_name=$(_win_name "$branch")
+
+  if [ "$wt_path" = "$GIT_ROOT" ]; then
+    tmux display-message "Cannot remove main worktree"
+    return 1
+  fi
+
+  if tmux list-windows -t "$SESSION" -F '#{window_name}' 2>/dev/null | grep -qxF "$win_name"; then
+    tmux kill-window -t "${SESSION}:${win_name}"
+  fi
+
+  git -C "$GIT_ROOT" worktree remove "$wt_path" 2>/dev/null || \
+    tmux display-message "Worktree has uncommitted changes — remove manually with --force"
+}
+
+_create() {
+  local branch="$1"
+  local parent; parent=$(dirname "$GIT_ROOT")
+  local repo; repo=$(basename "$GIT_ROOT")
+  local wt_path="${parent}/${repo}-${branch//\//-}"
+
+  if git -C "$GIT_ROOT" show-ref --verify --quiet "refs/heads/$branch"; then
+    git -C "$GIT_ROOT" worktree add "$wt_path" "$branch" 2>&1 || exit 1
+  else
+    git -C "$GIT_ROOT" worktree add -b "$branch" "$wt_path" 2>&1 || exit 1
+  fi
+
+  _open_window "$wt_path" "$(_win_name "$branch")"
+}
+
+_pick_new_branch() {
+  local result query selected
+
+  result=$(
+    git -C "$GIT_ROOT" branch -a --format='%(refname:short)' |
+      sed 's|^origin/||' | sort -u | grep -v '^HEAD$' |
+      fzf --prompt="branch > " --print-query --height=40% --border \
+        --header="type new name or select existing branch"
+  )
+
+  query=$(echo "$result" | head -1)
+  selected=$(echo "$result" | sed -n '2p')
+  echo "${selected:-$query}"
+}
+
+choice=$(
+  _worktrees | while IFS=$'\t' read -r path branch; do
+    printf '%s\t%s\n' "$branch" "$path"
+  done | fzf \
+      --prompt="worktree > " \
+      --delimiter=$'\t' \
+      --with-nth=1 \
+      --header="enter=open  ctrl-o=new  ctrl-x=remove" \
+      --expect="ctrl-o,ctrl-x" \
+      --height=40% --border
+)
+
+key=$(printf '%s' "$choice" | head -1)
+selected=$(printf '%s' "$choice" | tail -n +2)
+
+case "$key" in
+  ctrl-o)
+    branch=$(_pick_new_branch)
+    [ -z "$branch" ] && exit 0
+    _create "$branch"
+    ;;
+  ctrl-x)
+    [ -z "$selected" ] && exit 0
+    IFS=$'\t' read -r col1 col2 <<< "$selected"
+    _remove "$col2" "$col1"
+    ;;
+  *)
+    [ -z "$selected" ] && exit 0
+    IFS=$'\t' read -r col1 col2 <<< "$selected"
+    _open_window "$col2" "$(_win_name "$col1")"
+    ;;
+esac

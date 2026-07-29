@@ -26,8 +26,11 @@ DIRECT_DIRS=(
 
 NO_NVIM_DIRS=(
   "$HOME/Desktop"
-  "$HOME/Desktop/Pricing/bigquery"
   "$HOME/Desktop/Pricing/jira"
+)
+
+BQ_DIRS=(
+  "$HOME/Desktop/Pricing/bigquery"
 )
 
 KULALA_DIRS=(
@@ -37,6 +40,46 @@ KULALA_DIRS=(
 DB_DIRS=(
   "$HOME/Desktop/db"
 )
+
+selected_ai_cli() {
+  local cli
+  cli=$(tmux show-option -gv @ai_cli 2>/dev/null)
+  case "$cli" in
+  codex | claude)
+    echo "$cli"
+    ;;
+  *)
+    echo "claude"
+    ;;
+  esac
+}
+
+session_claude_model() {
+  case "$1" in
+  jira) echo "claude-haiku-4-5-20251001" ;;
+  esac
+}
+
+session_codex_model() {
+  case "$1" in
+  jira) echo "codex-mini-latest" ;;
+  esac
+}
+
+ai_cli_cmd() {
+  local session="$1"
+  local cli="$2"
+  local model
+  if [ "$cli" = "claude" ]; then
+    model=$(session_claude_model "$session")
+    [ -n "$model" ] && echo "ANTHROPIC_MODEL=$model claude" || echo "$cli"
+  elif [ "$cli" = "codex" ]; then
+    model=$(session_codex_model "$session")
+    [ -n "$model" ] && echo "CODEX_MODEL=$model codex" || echo "$cli"
+  else
+    echo "$cli"
+  fi
+}
 
 session_name_for() {
   local base
@@ -49,7 +92,9 @@ session_name_for() {
 create_or_switch() {
   local dir="$1"
   local session
+  local ai_cli
   session=$(session_name_for "$dir")
+  ai_cli=$(selected_ai_cli)
 
   if [ ! -d "$dir" ]; then
     echo "Not a directory: $dir" >&2
@@ -64,6 +109,9 @@ create_or_switch() {
     fi
     return
   fi
+
+  local ai_cmd
+  ai_cmd=$(ai_cli_cmd "$session" "$ai_cli")
 
   local no_nvim=false
   for no_nvim_dir in "${NO_NVIM_DIRS[@]}"; do
@@ -80,18 +128,29 @@ create_or_switch() {
     [[ "$dir" == "$db_dir" ]] && is_db=true && break
   done
 
+  local is_bq=false
+  for bq_dir in "${BQ_DIRS[@]}"; do
+    [[ "$dir" == "$bq_dir" ]] && is_bq=true && break
+  done
+
   tmux new-session -d -s "$session" -c "$dir" -n "work"
 
-  if $is_db; then
+  if $is_bq; then
+    tmux send-keys -t "${session}:work" "NVIM_DB_MODE=bigquery nvim -c 'DBUIToggle'" Enter
+    tmux split-window -t "${session}:work" -h -c "$dir"
+    tmux send-keys -t "${session}:work" "$ai_cmd" Enter
+    tmux resize-pane -t "${session}:work.left" -x "65%"
+    tmux select-pane -t "${session}:work.left"
+  elif $is_db; then
     tmux send-keys -t "${session}:work" "nvim -c 'DBUIToggle'" Enter
   elif $is_kulala; then
     tmux send-keys -t "${session}:work" "nvim ." Enter
   elif $no_nvim; then
-    tmux send-keys -t "${session}:work" "claude" Enter
+    tmux send-keys -t "${session}:work" "$ai_cmd" Enter
   else
     tmux send-keys -t "${session}:work" "nvim ." Enter
     tmux split-window -t "${session}:work" -h -c "$dir"
-    tmux send-keys -t "${session}:work" "claude" Enter
+    tmux send-keys -t "${session}:work" "$ai_cmd" Enter
     tmux resize-pane -t "${session}:work.left" -x "65%"
     tmux select-pane -t "${session}:work.left"
   fi
@@ -107,11 +166,22 @@ create_or_switch() {
 
 all_dirs() {
   for d in "$SCAN_DIR"/fury_*/; do
-    [ -d "$d" ] && printf '%s\n' "${d%/}"
+    [ -d "$d" ] || continue
+    [ -f "${d}.git" ] && continue  # skip git worktrees
+    printf '%s\n' "${d%/}"
   done
   for d in "${DIRECT_DIRS[@]}"; do
     [ -d "$d" ] && printf '%s\n' "$d"
   done
+}
+
+new_session_dirs() {
+  local dir
+  local session
+  while IFS= read -r dir; do
+    session=$(session_name_for "$dir")
+    tmux has-session -t "$session" 2>/dev/null || printf '%s\n' "$dir"
+  done < <(all_dirs)
 }
 
 pick_dir() {
@@ -119,7 +189,7 @@ pick_dir() {
   choice=$(
     {
       printf '[custom path]\t__custom__\n'
-      all_dirs | awk -F'/' '{print $NF "\t" $0}'
+      new_session_dirs | awk -F'/' '{print $NF "\t" $0}'
     } |
       fzf --prompt="repo > " --height=40% --border \
         --delimiter=$'\t' --with-nth=1 |

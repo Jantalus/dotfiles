@@ -9,15 +9,40 @@
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-  -- add gruvbox
   { "ellisonleao/gruvbox.nvim" },
 
-  -- Configure LazyVim to load gruvbox
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+    opts = { flavour = "latte" },
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+      -- watch the tmux theme state file and switch colorscheme live
+      local state_file = vim.fn.expand("~/.local/state/ghostty-theme")
+      local watcher = vim.uv.new_fs_event()
+      if watcher then
+        watcher:start(state_file, {}, vim.schedule_wrap(function()
+          local f = io.open(state_file, "r")
+          local state = f and f:read("*l") or "dark"
+          if f then f:close() end
+          vim.cmd("colorscheme " .. (state == "light" and "catppuccin-latte" or "gruvbox"))
+        end))
+      end
+    end,
+  },
+
+  -- pick startup colorscheme from the same state file prefix-t writes
   {
     "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "gruvbox",
-    },
+    opts = function(_, opts)
+      local f = io.open(vim.fn.expand("~/.local/state/ghostty-theme"), "r")
+      local state = f and f:read("*l") or "dark"
+      if f then f:close() end
+      opts.colorscheme = state == "light" and "catppuccin-latte" or "gruvbox"
+      return opts
+    end,
   },
 
   -- change trouble config
@@ -71,6 +96,15 @@ return {
         -- pyright will be automatically installed with mason and loaded with lspconfig
         pyright = {},
         gopls = {},
+        sqls = {
+          settings = {
+            sqls = {
+              connections = {
+                { driver = "bigquery", dataSourceName = "meli-bi-data" },
+              },
+            },
+          },
+        },
       },
     },
   },
@@ -153,6 +187,7 @@ return {
         "shellcheck",
         "shfmt",
         "flake8",
+        "sqls",
       },
     },
   },

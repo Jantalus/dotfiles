@@ -1,8 +1,35 @@
 #!/usr/bin/env bash
-# Usage: claude-tmux-notify set|clear
+# Usage as stop hook: claude-tmux-notify (no args)
+# Usage manually:     claude-tmux-notify set|clear [timeout_seconds]
 [ -z "$TMUX" ] && exit 0
-session=$(tmux display-message -p '#{session_name}')
-case "$1" in
-  set)   tmux set -t "$session" @claude_waiting 1 ;;
-  clear) tmux set -ut "$session" @claude_waiting ;;
-esac
+
+action="${1:-clear}"
+timeout="${2:-300}"
+
+(
+  session=$(tmux display-message -p '#{session_name}')
+  TIMER_KEY="@claude_waiting_timer"
+
+  _kill_timer() {
+    local pid
+    pid=$(tmux show-option -t "$session" "$TIMER_KEY" 2>/dev/null | awk '{print $2}')
+    [ -n "$pid" ] && kill "$pid" 2>/dev/null
+    tmux set -ut "$session" "$TIMER_KEY" 2>/dev/null
+  }
+
+  case "$action" in
+    set)
+      _kill_timer
+      tmux set -t "$session" @claude_waiting 1
+      ( sleep "$timeout"
+        tmux set -ut "$session" @claude_waiting 2>/dev/null
+        tmux set -ut "$session" "$TIMER_KEY" 2>/dev/null
+      ) &
+      tmux set -t "$session" "$TIMER_KEY" $!
+      ;;
+    clear)
+      _kill_timer
+      tmux set -ut "$session" @claude_waiting
+      ;;
+  esac
+) >/dev/null 2>&1 </dev/null &

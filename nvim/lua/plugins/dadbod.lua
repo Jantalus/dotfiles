@@ -22,18 +22,25 @@ return {
   },
   {
     "kristijanhusak/vim-dadbod-completion",
-    ft = { "sql", "mysql" },
+    lazy = true,
     dependencies = { "tpope/vim-dadbod" },
-    config = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "sql", "mysql" },
-        callback = function()
-          require("cmp").setup.buffer({
-            sources = { { name = "vim-dadbod-completion" } },
-          })
-        end,
-      })
-    end,
+  },
+  {
+    "saghen/blink.cmp",
+    opts = {
+      sources = {
+        per_filetype = {
+          sql = { "dadbod", "buffer" },
+          mysql = { "dadbod", "buffer" },
+        },
+        providers = {
+          dadbod = {
+            name = "Dadbod",
+            module = "vim_dadbod_completion.blink",
+          },
+        },
+      },
+    },
   },
   {
     "kristijanhusak/vim-dadbod-ui",
@@ -45,7 +52,7 @@ return {
       vim.g.db_ui_save_location = vim.fn.expand("~/Desktop/db")
       vim.g.db_ui_auto_execute_table_helpers = 1
 
-      vim.g.dbs = {
+      local all_dbs = {
         { name = "BigQuery",                  url = "bigquery:meli-bi-data" },
         { name = "Rule Engine SBX",          url = mysql(slave,  "sandbox") },
         { name = "Rule Engine PROD",          url = mysql(slave,  "ruleengine") },
@@ -56,6 +63,12 @@ return {
         { name = "Pricing taxes",             url = mysql(slave,  "pritaxes") },
         { name = "Pricing tags",              url = mysql(slave,  "pricingtag") },
       }
+
+      if vim.env.NVIM_DB_MODE == "bigquery" then
+        vim.g.dbs = { all_dbs[1] }
+      else
+        vim.g.dbs = all_dbs
+      end
     end,
   },
 }

@@ -9,7 +9,7 @@ overrides = {
         "theme = Catppuccin Latte\n"
         "palette = 15=#4c4f69\n"   # bright white → dark (fixes invisible text)
         "palette = 7=#5c5f77\n"    # white → darker gray
-        "minimum-contrast = 4.5"   # auto-darken any remaining light true-color text
+        "minimum-contrast = 1"
     ),
     "Gruvbox Dark": (
         "theme = Gruvbox Dark\n"

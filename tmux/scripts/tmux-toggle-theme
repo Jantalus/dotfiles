@@ -3,6 +3,108 @@ set -euo pipefail
 
 STATE_FILE="$HOME/.local/state/ghostty-theme"
 GHOSTTY_CONFIG="$HOME/.config/ghostty/config"
+TMUX_CONFIG="$HOME/.config/tmux/tmux.conf"
+
+apply_tmux_theme() {
+    local theme="$1"
+
+    tmux set-option -g status-position top
+    tmux set-option -g status-interval 5
+    tmux set-option -g status-left-length 40
+    tmux set-option -g status-right-length 80
+    tmux set-option -g window-status-separator ''
+
+    if [[ "$theme" == "light" ]]; then
+        tmux set-option -g status-style 'bg=#eff1f5,fg=#4c4f69'
+        tmux set-option -g status-left '#[bg=#ccd0da,fg=#8839ef,bold] #S #[bg=#eff1f5,fg=#ccd0da]'
+        tmux set-option -g status-right '#[bg=#eff1f5,fg=#bcc0cc]#[bg=#bcc0cc,fg=#4c4f69] #{@prefix_label} 🇦🇷 #[bg=#8839ef,fg=#bcc0cc]#[bg=#8839ef,fg=#eff1f5,bold] %H:%M '
+        tmux set-option -g window-status-format '#[bg=#eff1f5,fg=#7c7f93] #I  #W '
+        tmux set-option -g window-status-current-format '#[bg=#8839ef,fg=#eff1f5,bold] #I  #W #[bg=#eff1f5,fg=#8839ef]'
+    else
+        tmux set-option -g status-style 'bg=#1d2021,fg=#ebdbb2'
+        tmux set-option -g status-left '#[bg=#3c3836,fg=#fabd2f,bold] #S #[bg=#1d2021,fg=#3c3836]'
+        tmux set-option -g status-right '#[bg=#1d2021,fg=#665c54]#[bg=#665c54,fg=#ebdbb2] #{@prefix_label} 🇦🇷 #[bg=#fabd2f,fg=#665c54]#[bg=#fabd2f,fg=#1d2021,bold] %H:%M '
+        tmux set-option -g window-status-format '#[bg=#1d2021,fg=#928374] #I  #W '
+        tmux set-option -g window-status-current-format '#[bg=#fabd2f,fg=#1d2021,bold] #I  #W #[bg=#1d2021,fg=#fabd2f]'
+    fi
+}
+
+apply_claude_theme() {
+    local theme="$1"
+
+    python3 - "$theme" <<'PY'
+import json
+import os
+import sys
+
+theme = sys.argv[1]
+claude_dir = os.path.expanduser("~/.claude")
+settings_path = os.path.join(claude_dir, "settings.json")
+themes_dir = os.path.join(claude_dir, "themes")
+latte_theme_path = os.path.join(themes_dir, "catppuccin-latte.json")
+
+latte_theme = {
+    "name": "catppuccin-latte",
+    "base": "light",
+    "overrides": {
+        "claude": "#8839ef",
+        "claudeShimmer": "#7287fd",
+        "text": "#4c4f69",
+        "inverseText": "#eff1f5",
+        "inactive": "#7c7f93",
+        "subtle": "#ccd0da",
+        "permission": "#1e66f5",
+        "remember": "#ea76cb",
+        "success": "#40a02b",
+        "successShimmer": "#179299",
+        "error": "#d20f39",
+        "errorShimmer": "#e64553",
+        "warning": "#df8e1d",
+        "warningShimmer": "#fe640b",
+        "merged": "#40a02b",
+        "promptBorder": "#1e66f5",
+        "planMode": "#df8e1d",
+        "autoAccept": "#40a02b",
+        "bashBorder": "#8839ef",
+        "ide": "#1e66f5",
+        "fastMode": "#df8e1d",
+        "diffAdded": "#dcebd6",
+        "diffRemoved": "#f2d5d7",
+        "diffAddedDimmed": "#e6f1df",
+        "diffRemovedDimmed": "#f7e1e4",
+        "diffAddedWord": "#c7e3bd",
+        "diffRemovedWord": "#efc0c6",
+        "userMessageBackground": "#e6e9ef",
+        "selectionBg": "#ccd0da",
+        "red_FOR_SUBAGENTS_ONLY": "#d20f39",
+        "blue_FOR_SUBAGENTS_ONLY": "#1e66f5",
+        "green_FOR_SUBAGENTS_ONLY": "#40a02b",
+        "yellow_FOR_SUBAGENTS_ONLY": "#df8e1d",
+        "purple_FOR_SUBAGENTS_ONLY": "#8839ef",
+        "orange_FOR_SUBAGENTS_ONLY": "#fe640b",
+        "pink_FOR_SUBAGENTS_ONLY": "#ea76cb",
+        "cyan_FOR_SUBAGENTS_ONLY": "#179299",
+    },
+}
+
+os.makedirs(themes_dir, exist_ok=True)
+with open(latte_theme_path, "w") as f:
+    json.dump(latte_theme, f, indent=2)
+    f.write("\n")
+
+try:
+    with open(settings_path) as f:
+        settings = json.load(f)
+except FileNotFoundError:
+    settings = {}
+
+settings["theme"] = "custom:catppuccin-latte" if theme == "light" else "custom:gruvbox"
+
+with open(settings_path, "w") as f:
+    json.dump(settings, f, indent=2)
+    f.write("\n")
+PY
+}
 
 current=$(cat "$STATE_FILE" 2>/dev/null || echo "dark")
 
@@ -20,5 +122,9 @@ mkdir -p "$(dirname "$STATE_FILE")"
 echo "$next_state" > "$STATE_FILE"
 
 osascript -e 'tell application "System Events" to click menu item "Reload Configuration" of menu "Ghostty" of menu bar item "Ghostty" of menu bar 1 of application process "Ghostty"' &>/dev/null || true
+
+tmux source-file "$TMUX_CONFIG" &>/dev/null || true
+apply_tmux_theme "$next_state"
+apply_claude_theme "$next_state"
 
 tmux display-message "Theme: $next_label"

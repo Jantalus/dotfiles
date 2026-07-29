@@ -4,7 +4,7 @@ tmux ls -F '#{session_name}' 2>/dev/null | while read -r name; do
   if [ "$waiting" = "1" ]; then
     # Validate: only show ⏳ if claude is actually still running in this session
     if tmux list-panes -t "$name" -a -F '#{pane_current_command}' 2>/dev/null | grep -q '^claude$'; then
-      echo "$name ⏳"
+      echo "$name 💬"
     else
       tmux set-option -ut "$name" @claude_waiting 2>/dev/null
       echo "$name"

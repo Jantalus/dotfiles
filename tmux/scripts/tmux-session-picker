@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+current_ai_cli() {
+  local cli
+  cli=$(tmux show-option -gv @ai_cli 2>/dev/null)
+  case "$cli" in
+  codex | claude)
+    echo "$cli"
+    ;;
+  *)
+    echo "claude"
+    ;;
+  esac
+}
+
+toggle_ai_cli() {
+  local current
+  current=$(current_ai_cli)
+  if [ "$current" = "codex" ]; then
+    tmux set-option -g @ai_cli claude >/dev/null
+  else
+    tmux set-option -g @ai_cli codex >/dev/null
+  fi
+}
+
+if [ "${1:-}" = "--toggle-ai" ]; then
+  toggle_ai_cli
+fi
+
+ai_cli=$(current_ai_cli)
+header="enter=switch  ctrl-x=kill  ctrl-o=new  ctrl-a=ai:${ai_cli}"
+
+exec sh -c '
+  ~/.config/tmux/scripts/tmux-session-list |
+    fzf --prompt="session > " \
+      --header="$1" \
+      --bind "ctrl-x:execute-silent(~/.config/tmux/scripts/tmux-kill-session {})+reload(~/.config/tmux/scripts/tmux-session-list)" \
+      --bind "ctrl-o:execute(~/.config/tmux/scripts/px)+abort" \
+      --bind "ctrl-a:become(~/.config/tmux/scripts/tmux-session-picker --toggle-ai)" \
+      --bind "enter:become(~/.config/tmux/scripts/tmux-switch-session {})"
+' sh "$header"
