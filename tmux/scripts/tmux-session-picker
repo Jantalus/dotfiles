@@ -29,13 +29,21 @@ fi
 
 ai_cli=$(current_ai_cli)
 header="enter=switch  ctrl-x=kill  ctrl-o=new  ctrl-a=ai:${ai_cli}"
+theme=$(cat "$HOME/.local/state/ghostty-theme" 2>/dev/null || echo "dark")
+
+if [ "$theme" = "light" ]; then
+  fzf_colors="bg:#eff1f5,bg+:#ccd0da,fg:#4c4f69,fg+:#4c4f69,hl:#1e66f5,hl+:#1e66f5,prompt:#179299,pointer:#d20f39,marker:#40a02b,info:#df8e1d,header:#7c7f93,border:#bcc0cc"
+else
+  fzf_colors="bg:#1d2021,bg+:#3c3836,fg:#ebdbb2,fg+:#ebdbb2,hl:#83a598,hl+:#83a598,prompt:#8ec07c,pointer:#fb4934,marker:#b8bb26,info:#fabd2f,header:#928374,border:#665c54"
+fi
 
 exec sh -c '
   ~/.config/tmux/scripts/tmux-session-list |
     fzf --prompt="session > " \
       --header="$1" \
+      --color="$2" \
       --bind "ctrl-x:execute-silent(~/.config/tmux/scripts/tmux-kill-session {})+reload(~/.config/tmux/scripts/tmux-session-list)" \
       --bind "ctrl-o:execute(~/.config/tmux/scripts/px)+abort" \
       --bind "ctrl-a:become(~/.config/tmux/scripts/tmux-session-picker --toggle-ai)" \
       --bind "enter:become(~/.config/tmux/scripts/tmux-switch-session {})"
-' sh "$header"
+' sh "$header" "$fzf_colors"
